@@ -1,0 +1,69 @@
+[gd_scene load_steps=9 format=3 uid="uid://bpjqxmr8gc02n"]
+
+[ext_resource type="Script" uid="uid://c4sujrhikwyej" path="res://entites/sample/sample.gd" id="1_dxh71"]
+[ext_resource type="Texture2D" uid="uid://v8qg3x7rn3or" path="res://assets/Tilemap/tilemap.png" id="2_dxh71"]
+[ext_resource type="PackedScene" uid="uid://dvieakmq3cxn4" path="res://entites/spring/Spring.tscn" id="2_xqo1e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqo1e"]
+atlas = ExtResource("2_dxh71")
+region = Rect2(306, 126, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlkfg"]
+atlas = ExtResource("2_dxh71")
+region = Rect2(126, 90, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mi1qn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xqo1e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mlkfg")
+}],
+"loop": true,
+"name": &"spring",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxh71"]
+size = Vector2(13, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xqo1e"]
+size = Vector2(8, 4)
+
+[node name="Sample" type="Area2D"]
+script = ExtResource("1_dxh71")
+plant = ExtResource("2_xqo1e")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -9)
+sprite_frames = SubResource("SpriteFrames_mi1qn")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -8.5)
+shape = SubResource("RectangleShape2D_dxh71")
+debug_color = Color(0.807445, 0.396513, 0.329599, 0.42)
+
+[node name="HitBoxSample" type="StaticBody2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="HitBoxSample"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_xqo1e")
+disabled = true
+
+[node name="TimeGrow" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimeSample" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="TimeGrow" to="." method="_on_time_grow_timeout"]
+[connection signal="timeout" from="TimeSample" to="." method="_on_time_sample_timeout"]

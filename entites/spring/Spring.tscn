@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvieakmq3cxn4"]
+
+[ext_resource type="Script" uid="uid://dusm0lmkb6fsu" path="res://entites/spring/spring.gd" id="1_w5hrw"]
+[ext_resource type="Texture2D" uid="uid://v8qg3x7rn3or" path="res://assets/Tilemap/tilemap.png" id="1_xc4ng"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5hrw"]
+atlas = ExtResource("1_xc4ng")
+region = Rect2(126, 90, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ib7lp"]
+atlas = ExtResource("1_xc4ng")
+region = Rect2(126, 90, 18, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohtiy"]
+atlas = ExtResource("1_xc4ng")
+region = Rect2(144, 90, 18, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n38ms"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5hrw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ib7lp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohtiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ib7lp")
+}],
+"loop": true,
+"name": &"extend",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ocjq5"]
+size = Vector2(16, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c17iv"]
+size = Vector2(18, 6)
+
+[node name="Spring" type="StaticBody2D"]
+script = ExtResource("1_w5hrw")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -9)
+sprite_frames = SubResource("SpriteFrames_n38ms")
+
+[node name="AreaJump" type="Area2D" parent="."]
+
+[node name="Collision" type="CollisionShape2D" parent="AreaJump"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_ocjq5")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_c17iv")
+
+[connection signal="body_entered" from="AreaJump" to="." method="_on_area_jump_body_entered"]
